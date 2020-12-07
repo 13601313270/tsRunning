@@ -1,10 +1,10 @@
 {
   "name": "ts-running",
   "version": "0.1.1",
-  "description": "",
+  "description": "Typescript运行时校验工具",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "author": "wanghaoran",
   "license": "ISC"
