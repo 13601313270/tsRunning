@@ -1,11 +1,19 @@
 {
   "name": "ts-running",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "description": "Typescript运行时校验工具",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/13601313270/tsRunning.git"
+  },
+  "bugs": {
+    "url": "https://github.com/13601313270/tsRunning/issues"
+  },
+  "homepage": "https://github.com/13601313270/tsRunning#readme",
   "author": "wanghaoran",
   "license": "ISC"
 }
