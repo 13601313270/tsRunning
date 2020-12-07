@@ -228,6 +228,21 @@ const {parse, check} = require('./src/index.js');
             [{label: '', title: '11'}, false],
         ]
     ],
+    [
+        '{articles:{deep:{deep2:{deep3:number}},label:string|number}[]}',
+        '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"articles","value":{"type":"array","value":{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"deep","value":{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"deep2","value":{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"deep3","value":{"type":"number"}}]}}]}},{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"|","value":[{"type":"string"},{"type":"number"}]}}]}}}]}',
+        [
+            [1, false],
+            [[''], false],
+            [['', 1], false],
+            [{}, false],
+            [{label: 'asd'}, false],
+            [{label: 1}, false],
+            [{label: 1, title: '11'}, false],
+            [{label: '', title: '11'}, false],
+            [{articles: [{deep: {deep2: {deep3: 1}}, label: ''}]}, true],
+        ]
+    ],
 ].forEach(vals => {
     if (JSON.stringify(parse(vals[0])) === vals[1]) {
         console.log(JSON.stringify(parse(vals[0])) === vals[1])
