@@ -244,10 +244,10 @@ const {parse, check} = require('./src/index.js');
         ]
     ],
 ].forEach(vals => {
-    if (JSON.stringify(parse(vals[0])) === vals[1]) {
+    if(JSON.stringify(parse(vals[0])) === vals[1]) {
         console.log(JSON.stringify(parse(vals[0])) === vals[1])
         vals[2].forEach(itemCheck => {
-            if (check(vals[0], itemCheck[0]) === itemCheck[1]) {
+            if(check(vals[0], itemCheck[0]) === itemCheck[1]) {
                 // console.log('ok')
             } else {
                 console.log('====================error====================')
