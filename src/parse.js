@@ -46,7 +46,18 @@ function parse(typeStr) {
         if(word === undefined) {
             return undefined
         }
-        if(['number', 'string', 'boolean', 'any', 'void', 'undefined', 'null', 'never', 'object'].includes(getNextWord(true))) {
+        if([
+            'number',
+            'string',
+            'boolean',
+            'any',
+            'void',
+            'undefined',
+            'null',
+            'never',
+            'object',
+            'Date'
+        ].includes(getNextWord(true))) {
             temp = {type: getNextWord()}
         } else if(getNextWord(true) === 'Array') {
             getNextWord()

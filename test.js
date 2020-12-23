@@ -10,6 +10,15 @@ const {parse, check} = require('./src/index.js');
         ]
     ],
     [
+        'Date',
+        '{"type":"Date"}',
+        [
+            [1, false],
+            ['1', false],
+            [new Date(), true],
+        ]
+    ],
+    [
         'number[]',
         '{"type":"array","value":{"type":"number"}}',
         [
@@ -20,6 +29,15 @@ const {parse, check} = require('./src/index.js');
             ['123', false],
             [['123'], false],
             [null, false],
+        ]
+    ],
+    [
+        'any',
+        '{"type":"any"}',
+        [
+            [1, true],
+            ['123', true],
+            [null, true],
         ]
     ],
     [
@@ -71,6 +89,18 @@ const {parse, check} = require('./src/index.js');
             [[''], false],
             [true, false],
             [null, false],
+        ]
+    ],
+    [
+        'number|Date',
+        '{"type":"|","value":[{"type":"number"},{"type":"Date"}]}',
+        [
+            [1, true],
+            ['', false],
+            [[''], false],
+            [true, false],
+            [null, false],
+            [new Date(), true],
         ]
     ],
     [
@@ -194,8 +224,26 @@ const {parse, check} = require('./src/index.js');
             [{label: 'asd'}, false],
             [{label: 1}, false],
             [{label: 1, title: '11'}, false],
+            [[{"label": "asd"}, {"label": "222"}], true],
             [{label: '', title: '11'}, false],
             [[{label: 'asd'}], true],
+        ]
+    ],
+    [
+        '{label:any}[]',
+        '{"type":"array","value":{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"any"}}]}}',
+        [
+            [1, false],
+            [[''], false],
+            [['', 1], false],
+            [{}, false],
+            [{label: 'asd'}, false],
+            [{label: 1}, false],
+            [{label: 1, title: '11'}, false],
+            [[{"label": "asd"}, {"label": "222"}], true],
+            [{label: '', title: '11'}, false],
+            [[{label: 'asd'}], true],
+            [[{label: 1}], true],
         ]
     ],
     [

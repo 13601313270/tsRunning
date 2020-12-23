@@ -8,6 +8,10 @@ function check(parseConfig, value) {
             return typeof val === 'boolean'
         } else if(config.type === 'void') {
             return val === null || val === undefined;
+        } else if(config.type === 'any') {
+            return true;
+        } else if(config.type === 'Date') {
+            return val instanceof Date;
         } else if(config.type === 'array') {
             if(val instanceof Array) {
                 for (let i = 0; i < val.length; i++) {
