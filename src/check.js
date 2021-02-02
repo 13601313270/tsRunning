@@ -64,6 +64,8 @@ function check(parseConfig, value) {
                 }
             }
             return true;
+        } else if(config.type === 'value') {
+            return config.value === val;
         } else {
             console.log('************* otherType *************')
             console.log(config.type)

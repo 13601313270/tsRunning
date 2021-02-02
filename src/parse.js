@@ -13,12 +13,12 @@ function parse(typeStr) {
             if(!onlyGet) {
                 slip += 2
             }
-            return word;
+            return word.replace(/\s/g,'');
         } else if(keywords.includes(typeStr[slip])) {
             if(!onlyGet) {
                 slip++
             }
-            return word
+            return word.replace(/\s/g,'')
         }
         while (slip < typeStr.length) {
             if(keywords.includes(typeStr[slip + 1])) {
@@ -26,7 +26,7 @@ function parse(typeStr) {
                 if(onlyGet) {
                     slip = beginSlip;
                 }
-                return word;
+                return word.replace(/\s/g,'');
             } else {
                 slip++;
             }
@@ -37,7 +37,7 @@ function parse(typeStr) {
         if(onlyGet) {
             slip = beginSlip;
         }
-        return word;
+        return word.replace(/\s/g,'');
     }
 
     function result(env) {
@@ -99,6 +99,25 @@ function parse(typeStr) {
                     break;
                 }
             }
+        } else if(getNextWord(true).match(/^\d+$/)) {
+            temp = {
+                type: 'value',
+                value: parseInt(getNextWord())
+            }
+        } else if(getNextWord(true).match(/^\"(.+)\"$/)) {
+            temp = {
+                type: 'value',
+                value: getNextWord().match(/^\"(.+)\"$/, '$1')[1]
+            }
+        } else if(['true', 'false'].includes(getNextWord(true))) {
+            temp = {
+                type: 'value',
+                value: getNextWord() === 'true'
+            }
+        } else {
+            console.log('!!!!!!!')
+            console.log(getNextWord(true))
+            console.log(getNextWord(true))
         }
         if(getNextWord(true) === '|') {
             slip++;

@@ -291,6 +291,99 @@ const {parse, check} = require('./src/index.js');
             [{articles: [{deep: {deep2: {deep3: 1}}, label: ''}]}, true],
         ]
     ],
+    [
+        `{
+        label:string
+        }`,
+        '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"string"}}]}',
+        [
+            [1, false],
+            [[''], false],
+            [['', 1], false],
+            [{}, false],
+            [{label: 'asd'}, true],
+            [{label: 1}, false],
+            [{label: 1, title: '11'}, false],
+            [{label: '', title: '11'}, false],
+        ]
+    ],
+    [
+        '88',
+        '{"type":"value","value":88}',
+        [
+            [1, false],
+            [88, true],
+            ["88", false],
+        ]
+    ],
+    [
+        '"88"',
+        '{"type":"value","value":"88"}',
+        [
+            [1, false],
+            [88, false],
+            ["88", true],
+            ["", false],
+        ]
+    ],
+    [
+        '"hello"',
+        '{"type":"value","value":"hello"}',
+        [
+            [1, false],
+            [88, false],
+            ["88", false],
+            ["hello", true],
+            ["", false],
+        ]
+    ],
+    [
+        'true',
+        '{"type":"value","value":true}',
+        [
+            [1, false],
+            [88, false],
+            ["88", false],
+            ["hello", false],
+            ["", false],
+            [false, false],
+            [true, true],
+        ]
+    ],
+    [
+        'false',
+        '{"type":"value","value":false}',
+        [
+            [1, false],
+            [88, false],
+            ["88", false],
+            ["hello", false],
+            ["", false],
+            [false, true],
+            [true, false],
+        ]
+    ],
+    [
+        '1|3',
+        '{"type":"|","value":[{"type":"value","value":1},{"type":"value","value":3}]}',
+        [
+            [1, true],
+            ['123', false],
+            [3, true],
+            [true, false],
+        ]
+    ],
+    [
+        '1|false',
+        '{"type":"|","value":[{"type":"value","value":1},{"type":"value","value":false}]}',
+        [
+            [1, true],
+            ['123', false],
+            [3, false],
+            [true, false],
+            [false, true],
+        ]
+    ],
 ].forEach(vals => {
     if(JSON.stringify(parse(vals[0])) === vals[1]) {
         console.log(JSON.stringify(parse(vals[0])) === vals[1])
@@ -306,6 +399,8 @@ const {parse, check} = require('./src/index.js');
             }
         })
     } else {
-        console.error(false, '!!!!!', vals[0], JSON.stringify(parse(vals[0])), vals[1])
+        console.error(false, '!!!!!', vals[0])
+        console.error(false, '!!!!!', JSON.stringify(parse(vals[0])))
+        console.error(false, '!!!!!', vals[1])
     }
 })
