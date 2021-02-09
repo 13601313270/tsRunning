@@ -30,7 +30,8 @@ const testList = [
             ['123', false],
             [['123'], false],
             [null, false],
-        ]
+        ],
+        'Array<number>'
     ],
     [
         'any',
@@ -80,7 +81,8 @@ const testList = [
             ['123', false],
             [['123'], false],
             [null, false],
-        ]
+        ],
+        'Array<Array<number>>'
     ],
     [
         'number|string',
@@ -105,7 +107,8 @@ const testList = [
             [[1, 2], true],
             [[1, ''], true],
             [[true, ''], false],
-        ]
+        ],
+        'Array<number|string>'
     ],
     [
         'number|string[]',
@@ -116,7 +119,8 @@ const testList = [
             [[''], true],
             [true, false],
             [null, false],
-        ]
+        ],
+        'number|Array<string>'
     ],
     [
         'number|Date',
@@ -198,7 +202,8 @@ const testList = [
             [['', 1], false],
             [[['', 1]], true],
             [[['', '']], false],
-        ]
+        ],
+        'Array<[string,number]>'
     ],
     [
         '{label:string}',
@@ -212,7 +217,10 @@ const testList = [
             [{label: 1}, false],
             [{label: 1, title: '11'}, false],
             [{label: '', title: '11'}, false],
-        ]
+        ],
+        `{
+    label:string
+}`
     ],
     [
         '{label:string,title:number}',
@@ -225,7 +233,11 @@ const testList = [
             [{title: ''}, false],
             [{label: '', title: ''}, false],
             [{label: '', title: 1}, true],
-        ]
+        ],
+        `{
+    label:string,
+    title:number
+}`
     ],
     [
         '{label?:string}',
@@ -239,7 +251,10 @@ const testList = [
             [{label: 1}, false],
             [{label: 1, title: '11'}, false],
             [{label: '', title: '11'}, false],
-        ]
+        ],
+        `{
+    label?:string
+}`
     ],
     [
         '{label:string}[]',
@@ -255,7 +270,10 @@ const testList = [
             [[{"label": "asd"}, {"label": "222"}], true],
             [{label: '', title: '11'}, false],
             [[{label: 'asd'}], true],
-        ]
+        ],
+        `Array<{
+    label:string
+}>`
     ],
     [
         '{label:any}[]',
@@ -272,7 +290,10 @@ const testList = [
             [{label: '', title: '11'}, false],
             [[{label: 'asd'}], true],
             [[{label: 1}], true],
-        ]
+        ],
+        `Array<{
+    label:any
+}>`
     ],
     [
         '{label?:string}[]',
@@ -288,7 +309,10 @@ const testList = [
             [{label: '', title: '11'}, false],
             [[{}], true],
             [[{label: 'asd'}], true],
-        ]
+        ],
+        `Array<{
+    label?:string
+}>`
     ],
     [
         '{label:string|number}',
@@ -302,7 +326,10 @@ const testList = [
             [{label: 1}, true],
             [{label: 1, title: '11'}, false],
             [{label: '', title: '11'}, false],
-        ]
+        ],
+        `{
+    label:string|number
+}`
     ],
     [
         '{articles:{deep:{deep2:{deep3:number}},label:string|number}[]}',
@@ -317,7 +344,17 @@ const testList = [
             [{label: 1, title: '11'}, false],
             [{label: '', title: '11'}, false],
             [{articles: [{deep: {deep2: {deep3: 1}}, label: ''}]}, true],
-        ]
+        ],
+        `{
+    articles:Array<{
+        deep:{
+            deep2:{
+                deep3:number
+            }
+        },
+        label:string|number
+    }>
+}`
     ],
     [
         `{
@@ -334,7 +371,9 @@ const testList = [
             [{label: 1, title: '11'}, false],
             [{label: '', title: '11'}, false],
         ],
-        '{label:string}'
+        `{
+    label:string
+}`
     ],
     [
         '88',

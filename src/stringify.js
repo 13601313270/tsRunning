@@ -1,5 +1,9 @@
+function tabStr(tab) {
+    return Array(tab * 4 + 1).join(' ')
+}
+
 function stringify(obj) {
-    function result(obj) {
+    function result(obj, tab) {
         if([
             'number',
             'string',
@@ -13,31 +17,27 @@ function stringify(obj) {
         ].includes(obj.type)) {
             return obj.type;
         } else if(obj.type === 'array') {
-            if(obj.value.type === '|') {
-                return '(' + result(obj.value) + ')' + '[]'
-            } else {
-                return result(obj.value) + '[]'
-            }
+            return 'Array<' + result(obj.value, tab) + '>'
         } else if(obj.type === '|') {
             return obj.value.map(item => {
-                return result(item)
+                return result(item, tab)
             }).join('|')
         } else if(obj.type === 'tuple') {
             return '[' + obj.value.map(item => {
-                return result(item)
+                return result(item, tab)
             }).join(',') + ']'
         } else if(obj.type === 'object') {
-            return '{' + obj.value.map(item => {
-                return result(item)
-            }).join(',') + '}'
+            return '{\n' + obj.value.map(item => {
+                return tabStr(tab + 1) + result(item, tab + 1)
+            }).join(',\n') + '\n' + tabStr(tab) + '}'
         } else if(obj.type === 'objectValue') {
-            return obj.key + (obj.mastNeed ? '' : '?') + ':' + result(obj.value)
+            return obj.key + (obj.mastNeed ? '' : '?') + ':' + result(obj.value, tab)
         } else if(obj.type === 'value') {
             return JSON.stringify(obj.value);
         }
     }
 
-    return result(obj)
+    return result(obj, 0)
 }
 
 exports.stringify = stringify;
