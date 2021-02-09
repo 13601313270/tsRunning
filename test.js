@@ -1,5 +1,6 @@
-const {parse, check} = require('./src/index.js');
-[
+const {parse, check, stringify} = require('./src/index.js');
+
+const testList = [
     [
         'number',
         '{"type":"number"}',
@@ -63,7 +64,8 @@ const {parse, check} = require('./src/index.js');
             ['123', false],
             [['123'], false],
             [null, false],
-        ]
+        ],
+        'number[]'
     ],
     [
         'number[][]',
@@ -92,6 +94,31 @@ const {parse, check} = require('./src/index.js');
         ]
     ],
     [
+        '(number|string)[]',
+        '{"type":"array","value":{"type":"|","value":[{"type":"number"},{"type":"string"}]}}',
+        [
+            [1, false],
+            ['', false],
+            [[''], true],
+            [true, false],
+            [null, false],
+            [[1, 2], true],
+            [[1, ''], true],
+            [[true, ''], false],
+        ]
+    ],
+    [
+        'number|string[]',
+        '{"type":"|","value":[{"type":"number"},{"type":"array","value":{"type":"string"}}]}',
+        [
+            [1, true],
+            ['', false],
+            [[''], true],
+            [true, false],
+            [null, false],
+        ]
+    ],
+    [
         'number|Date',
         '{"type":"|","value":[{"type":"number"},{"type":"Date"}]}',
         [
@@ -105,7 +132,7 @@ const {parse, check} = require('./src/index.js');
     ],
     [
         'number|string|boolean',
-        '{"type":"|","value":[{"type":"string"},{"type":"boolean"},{"type":"number"}]}',
+        '{"type":"|","value":[{"type":"number"},{"type":"string"},{"type":"boolean"}]}',
         [
             [1, true],
             ['', true],
@@ -134,7 +161,8 @@ const {parse, check} = require('./src/index.js');
             ['123', false],
             [['123'], true],
             [null, false],
-        ]
+        ],
+        '(number|string)[]'
     ],
     [
         '[string,number]',
@@ -305,7 +333,8 @@ const {parse, check} = require('./src/index.js');
             [{label: 1}, false],
             [{label: 1, title: '11'}, false],
             [{label: '', title: '11'}, false],
-        ]
+        ],
+        '{label:string}'
     ],
     [
         '88',
@@ -384,9 +413,18 @@ const {parse, check} = require('./src/index.js');
             [false, true],
         ]
     ],
-].forEach(vals => {
+];
+for (let i = 0; i < testList.length; i++) {
+    const vals = testList[i];
     if(JSON.stringify(parse(vals[0])) === vals[1]) {
         console.log(JSON.stringify(parse(vals[0])) === vals[1])
+        if(stringify(JSON.parse(vals[1])) !== vals[0] && stringify(JSON.parse(vals[1])) !== vals[3]) {
+            console.error('=====stringify失败！=====')
+            console.error(vals[0])
+            console.error(vals[1])
+            console.error(stringify(JSON.parse(vals[1])))
+            break;
+        }
         vals[2].forEach(itemCheck => {
             if(check(vals[0], itemCheck[0]) === itemCheck[1]) {
                 // console.log('ok')
@@ -402,5 +440,6 @@ const {parse, check} = require('./src/index.js');
         console.error(false, '!!!!!', vals[0])
         console.error(false, '!!!!!', JSON.stringify(parse(vals[0])))
         console.error(false, '!!!!!', vals[1])
+        break;
     }
-})
+}

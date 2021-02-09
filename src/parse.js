@@ -3,7 +3,7 @@ function parse(typeStr) {
 
     function getNextWord(onlyGet = false) {
         const beginSlip = slip;
-        const keywords = ['[]', '[', ']', '|', ',', '<', '>', '{', '}', '?:', ':', '?'];
+        const keywords = ['[]', '[', ']', '|', ',', '<', '>', '{', '}', '?:', ':', '?', '(', ')'];
         let word = typeStr[slip];
         if(word === undefined) {
             return word;
@@ -55,7 +55,6 @@ function parse(typeStr) {
             'undefined',
             'null',
             'never',
-            'object',
             'Date'
         ].includes(getNextWord(true))) {
             temp = {type: getNextWord()}
@@ -114,8 +113,14 @@ function parse(typeStr) {
                 type: 'value',
                 value: getNextWord() === 'true'
             }
+        } else if(getNextWord(true) === '(') {
+            getNextWord();
+            temp = result(')')
+            if(getNextWord(true) === ')') {
+                getNextWord();
+            }
         } else {
-            console.log('!!!!!!!')
+            console.log('未知关键词!!!!!!!')
             console.log(getNextWord(true))
             console.log(getNextWord(true))
         }
@@ -124,7 +129,7 @@ function parse(typeStr) {
             while (getNextWord(true) !== undefined) {
                 const orTemp = result('globle')
                 if(orTemp.type === '|') {
-                    orTemp.value.push(temp);
+                    orTemp.value.unshift(temp);
                     temp = orTemp;
                 } else {
                     temp = {type: '|', value: [temp, orTemp]}

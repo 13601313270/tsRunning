@@ -28,6 +28,7 @@ check('{label?:string}[]',[{label: 'hello'}]); // true
 check('{label:string|number}',{label: 1}); // true
 check('[string,number][]',[['', 1]]); // true
 check('{label:string,title:number}',{label: '', title: ''}); // false
+check('"hello"|"world"',"hello"); // true
 ```
 check方法返回boolean值，说明第二个参数，是否符合第一个参数ts类型语法
 
