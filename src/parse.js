@@ -3,7 +3,7 @@ function parse(typeStr) {
 
     function getNextWord(onlyGet = false) {
         const beginSlip = slip;
-        const keywords = ['[]', '[', ']', '|', ',', '<', '>', '{', '}', '?:', ':', '?', '(', ')'];
+        const keywords = ['[]', '[', ']', '|', ',', ';', '<', '>', '{', '}', '?:', ':', '?', '(', ')'];
         let word = typeStr[slip];
         if(word === undefined) {
             return word;
@@ -84,6 +84,9 @@ function parse(typeStr) {
             slip++;
             temp = {type: 'object', value: []}
             while (getNextWord(true) !== undefined) {
+                if(getNextWord(true) === '}') {
+                    break;
+                }
                 let key = getNextWord();
                 let mastNeed = getNextWord() !== '?:';
                 let value = result('globle');
