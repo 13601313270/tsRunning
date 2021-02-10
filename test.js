@@ -257,6 +257,26 @@ const testList = [
 }`
     ],
     [
+        `{
+    label:string,
+    title:number,
+}`,
+        '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"string"}},{"type":"objectValue","mastNeed":true,"key":"title","value":{"type":"number"}}]}',
+        [
+            [1, false],
+            [[1], false],
+            [{}, false],
+            [{label: ''}, false],
+            [{title: ''}, false],
+            [{label: '', title: ''}, false],
+            [{label: '', title: 1}, true],
+        ],
+        `{
+    label:string,
+    title:number
+}`
+    ],
+    [
         '{label:string;title:number}',
         '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"string"}},{"type":"objectValue","mastNeed":true,"key":"title","value":{"type":"number"}}]}',
         [

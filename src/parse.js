@@ -1,4 +1,5 @@
-function parse(typeStr) {
+function parse(typeStrProp) {
+    const typeStr = typeStrProp.replace(/\s/g, '')
     let slip = 0;
 
     function getNextWord(onlyGet = false) {
@@ -13,12 +14,12 @@ function parse(typeStr) {
             if(!onlyGet) {
                 slip += 2
             }
-            return word.replace(/\s/g,'');
+            return word;
         } else if(keywords.includes(typeStr[slip])) {
             if(!onlyGet) {
                 slip++
             }
-            return word.replace(/\s/g,'')
+            return word
         }
         while (slip < typeStr.length) {
             if(keywords.includes(typeStr[slip + 1])) {
@@ -26,7 +27,7 @@ function parse(typeStr) {
                 if(onlyGet) {
                     slip = beginSlip;
                 }
-                return word.replace(/\s/g,'');
+                return word;
             } else {
                 slip++;
             }
@@ -37,7 +38,7 @@ function parse(typeStr) {
         if(onlyGet) {
             slip = beginSlip;
         }
-        return word.replace(/\s/g,'');
+        return word;
     }
 
     function result(env) {
