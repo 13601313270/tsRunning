@@ -69,7 +69,6 @@ function check(parseConfig, value) {
         } else if(config.type === 'func') {
             if(typeof val === 'function') {
                 console.warn("对函数类型的check操作，只能判断是否是函数");
-                console.log(val.toString());
                 return true;
             } else {
                 return false;
