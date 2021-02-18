@@ -66,6 +66,14 @@ function check(parseConfig, value) {
             return true;
         } else if(config.type === 'value') {
             return config.value === val;
+        } else if(config.type === 'func') {
+            if(typeof val === 'function') {
+                console.warn("对函数类型的check操作，只能判断是否是函数");
+                console.log(val.toString());
+                return true;
+            } else {
+                return false;
+            }
         } else {
             console.log('************* otherType *************')
             console.log(config.type)

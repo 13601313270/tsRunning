@@ -4,7 +4,7 @@ function parse(typeStrProp) {
 
     function getNextWord(onlyGet = false) {
         const beginSlip = slip;
-        const keywords = ['[]', '[', ']', '|', ',', ';', '<', '>', '{', '}', '?:', ':', '?', '(', ')'];
+        const keywords = ['[]', '[', ']', '|', ',', ';', '<', '>', '{', '}', '?:', ':', '?', '(', ')', '=>'];
         let word = typeStr[slip];
         if(word === undefined) {
             return word;
@@ -119,9 +119,52 @@ function parse(typeStrProp) {
             }
         } else if(getNextWord(true) === '(') {
             getNextWord();
-            temp = result(')')
-            if(getNextWord(true) === ')') {
-                getNextWord();
+            let leftCount = 1;
+            // 判断是否是一个函数语法
+            let isFunc = false;
+            for (let i = slip; i < typeStr.length; i++) {
+                if(typeStr[i] === '(') {
+                    leftCount++
+                } else if(typeStr[i] === ')') {
+                    leftCount--
+                }
+                if(leftCount === 0) {
+                    if(typeStr.slice(i + 1, i + 3) === '=>') {
+                        isFunc = true
+                    }
+                    break;
+                }
+            }
+            if(isFunc) {
+                temp = {
+                    type: 'func',
+                    props: [],
+                    return: {type: 'any'}
+                }
+                let p = 0;
+                while (p++ < 100 && getNextWord(true) !== ')') {
+                    const paramName = getNextWord();
+                    let type = {type: 'any'}
+                    if(getNextWord(true) === ':') {
+                        getNextWord()
+                        type = result(')');
+                    }
+                    temp.props.push({
+                        type: 'prop',
+                        name: paramName,
+                        propType: type
+                    })
+                }
+                getNextWord(); // )
+                if(getNextWord() !== '=>') {
+                    throw new Error('函数类型错误')
+                }
+                temp.return = result();
+            } else {
+                temp = result(')')
+                if(getNextWord(true) === ')') {
+                    getNextWord();
+                }
             }
         } else {
             console.log('未知关键词!!!!!!!')

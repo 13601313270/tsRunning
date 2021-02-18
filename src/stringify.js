@@ -34,6 +34,10 @@ function stringify(obj) {
             return obj.key + (obj.mastNeed ? '' : '?') + ':' + result(obj.value, tab)
         } else if(obj.type === 'value') {
             return JSON.stringify(obj.value);
+        } else if(obj.type === 'func') {
+            return '(' + obj.props.map(item => {
+                return item.name + ": " + result(item.propType);
+            }).join(',') + ') => ' + result(obj.return)
         }
     }
 
