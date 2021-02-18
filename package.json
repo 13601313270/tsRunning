@@ -1,6 +1,6 @@
 {
   "name": "ts-running",
-  "version": "0.3.5",
+  "version": "0.5.0",
   "description": "Typescript运行时校验工具",
   "main": "src/index.js",
   "types": "src/index.d.ts",

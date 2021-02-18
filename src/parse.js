@@ -88,10 +88,39 @@ function parse(typeStrProp) {
                 if(getNextWord(true) === '}') {
                     break;
                 }
-                let key = getNextWord();
+                let key;
+                if(getNextWord(true) === '[') {
+                    getNextWord()
+                    key = getNextWord();
+                    if(getNextWord(true) === ':') {
+                        getNextWord()
+                        key = {
+                            'type': 'objectKey',
+                            'name': key,
+                            'keyType': result('[')
+                        }
+                        getNextWord(); // ]
+                    }
+                } else {
+                    key = getNextWord();
+                }
+                if(['}', ','].includes(getNextWord(true))) {
+                    temp.value.push({
+                        type: 'objectValue',
+                        mastNeed: true,
+                        key: key,
+                        value: {type: 'any'}
+                    })
+                    if(getNextWord(true) === '}') {
+                        break;
+                    } else {
+                        getNextWord(); // ,
+                        continue;
+                    }
+                }
                 let mastNeed = getNextWord() !== '?:';
                 let value = result('globle');
-                const nextWord = getNextWord()
+                const nextWord = getNextWord(); // ,
                 temp.value.push({
                     type: 'objectValue',
                     mastNeed: mastNeed,
@@ -154,6 +183,9 @@ function parse(typeStrProp) {
                         name: paramName,
                         propType: type
                     })
+                    if(getNextWord(true) === ',') {
+                        getNextWord()
+                    }
                 }
                 getNextWord(); // )
                 if(getNextWord() !== '=>') {

@@ -1,4 +1,5 @@
 const {parse, check, stringify} = require('../src/index.js');
+
 function run() {
     const testList = [
         [
@@ -206,7 +207,7 @@ function run() {
             'Array<[string,number]>'
         ],
         [
-            '{label:string}',
+            '{ label:string}',
             '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"string"}}]}',
             [
                 [1, false],
@@ -219,7 +220,160 @@ function run() {
                 [{label: '', title: '11'}, false],
             ],
             `{
-    label:string
+    label: string
+}`
+        ],
+        [
+            '{ [key: string]: number }',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":{"type":"objectKey","name":"key","keyType":{"type":"string"}},"value":{"type":"number"}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, true],
+                [[], false],
+                [{label: 'asd'}, false],
+                [{label: 1}, true],
+                [{label: 1, title: '11'}, false],
+                [{label: 1, title: 2}, true],
+                [{label: '', title: '11'}, false],
+            ],
+            `{
+    [key: string]: number
+}`
+        ],
+        [
+            '{ [key: number]: number }',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":{"type":"objectKey","name":"key","keyType":{"type":"number"}},"value":{"type":"number"}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [{label: 'asd'}, false],
+                [{label: 1}, false],
+                [{label: 1, title: '11'}, false],
+                [{label: 1, title: 2}, false],
+                [{label: '', title: '11'}, false],
+                [[], true],
+                [[2], true],
+                [['2'], false],
+            ],
+            `{
+    [key: number]: number
+}`
+        ],
+        [
+            '{ [key: string]: number, length: number }',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":{"type":"objectKey","name":"key","keyType":{"type":"string"}},"value":{"type":"number"}},{"type":"objectValue","mastNeed":true,"key":"length","value":{"type":"number"}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [[], false],
+                [{label: 'asd'}, false],
+                [{label: 1}, false],
+                [{label: 1, title: '11'}, false],
+                [{label: 1, title: 2}, false],
+                [{label: '', title: '11'}, false],
+                [{label: 1, length: 2}, true],
+                [{label: 1, length: '2'}, false],
+                [{label: '', length: 2}, false],
+                [{label: 1, length: 2, title: ''}, false],
+                [{label: 1, length: 2, title: true}, false],
+            ],
+            `{
+    [key: string]: number,
+    length: number
+}`
+        ],
+        [
+            '{label:any}',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"any"}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [{label: 'asd'}, true],
+                [{label: 1}, true],
+                [{label: 1, title: '11'}, false],
+                [{label: '', title: '11'}, false],
+            ],
+            `{
+    label: any
+}`
+        ],
+        [
+            '{label}',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"any"}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [{label: 'asd'}, true],
+                [{label: 1}, true],
+                [{label: 1, title: '11'}, false],
+                [{label: '', title: '11'}, false],
+            ],
+            `{
+    label: any
+}`
+        ],
+        [
+            '{label,title}',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"any"}},{"type":"objectValue","mastNeed":true,"key":"title","value":{"type":"any"}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [{label: 'asd'}, false],
+                [{label: 1}, false],
+                [{label: 1, title: '11'}, true],
+                [{label: '', title: '11'}, true],
+            ],
+            `{
+    label: any,
+    title: any
+}`
+        ],
+        [
+            '{label:string,title}',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"string"}},{"type":"objectValue","mastNeed":true,"key":"title","value":{"type":"any"}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [{label: 'asd'}, false],
+                [{label: 1}, false],
+                [{label: 1, title: '11'}, false],
+                [{label: '', title: '11'}, true],
+            ],
+            `{
+    label: string,
+    title: any
+}`
+        ],
+        [
+            '{label,title:string}',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"any"}},{"type":"objectValue","mastNeed":true,"key":"title","value":{"type":"string"}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [{label: 'asd'}, false],
+                [{label: 1}, false],
+                [{label: 1, title: '11'}, true],
+                [{label: '', title: 11}, false],
+            ],
+            `{
+    label: any,
+    title: string
 }`
         ],
         [
@@ -235,8 +389,8 @@ function run() {
                 [{label: '', title: 1}, true],
             ],
             `{
-    label:string,
-    title:number
+    label: string,
+    title: number
 }`
         ],
         [
@@ -252,8 +406,8 @@ function run() {
                 [{label: '', title: 1}, true],
             ],
             `{
-    label:string,
-    title:number
+    label: string,
+    title: number
 }`
         ],
         [
@@ -272,8 +426,8 @@ function run() {
                 [{label: '', title: 1}, true],
             ],
             `{
-    label:string,
-    title:number
+    label: string,
+    title: number
 }`
         ],
         [
@@ -289,8 +443,8 @@ function run() {
                 [{label: '', title: 1}, true],
             ],
             `{
-    label:string,
-    title:number
+    label: string,
+    title: number
 }`
         ],
         [
@@ -306,8 +460,8 @@ function run() {
                 [{label: '', title: 1}, true],
             ],
             `{
-    label:string,
-    title:number
+    label: string,
+    title: number
 }`
         ],
         [
@@ -324,7 +478,7 @@ function run() {
                 [{label: '', title: '11'}, false],
             ],
             `{
-    label?:string
+    label?: string
 }`
         ],
         [
@@ -343,7 +497,7 @@ function run() {
                 [[{label: 'asd'}], true],
             ],
             `Array<{
-    label:string
+    label: string
 }>`
         ],
         [
@@ -363,7 +517,7 @@ function run() {
                 [[{label: 1}], true],
             ],
             `Array<{
-    label:any
+    label: any
 }>`
         ],
         [
@@ -382,7 +536,7 @@ function run() {
                 [[{label: 'asd'}], true],
             ],
             `Array<{
-    label?:string
+    label?: string
 }>`
         ],
         [
@@ -399,7 +553,7 @@ function run() {
                 [{label: '', title: '11'}, false],
             ],
             `{
-    label:string|number
+    label: string|number
 }`
         ],
         [
@@ -417,19 +571,19 @@ function run() {
                 [{articles: [{deep: {deep2: {deep3: 1}}, label: ''}]}, true],
             ],
             `{
-    articles:Array<{
-        deep:{
-            deep2:{
-                deep3:number
+    articles: Array<{
+        deep: {
+            deep2: {
+                deep3: number
             }
         },
-        label:string|number
+        label: string|number
     }>
 }`
         ],
         [
             `{
-        label:string
+        label: string
         }`,
             '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"string"}}]}',
             [
@@ -443,7 +597,7 @@ function run() {
                 [{label: '', title: '11'}, false],
             ],
             `{
-    label:string
+    label: string
 }`
         ],
         [
@@ -545,7 +699,84 @@ function run() {
                 }, true]
             ],
             `{
-    label:(price: number) => boolean
+    label: (price: number) => boolean
+}`
+        ],
+        [
+            '{ label: (price: number,) => boolean }',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"func","props":[{"type":"prop","name":"price","propType":{"type":"number"}}],"return":{"type":"boolean"}}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [{label: 'asd'}, false],
+                [{label: 1}, false],
+                [{label: 1, title: '11'}, false],
+                [{label: '', title: '11'}, false],
+                [function (price) {
+                    return false;
+                }, false],
+                [{
+                    label: function (price) {
+                        return false;
+                    }
+                }, true]
+            ],
+            `{
+    label: (price: number) => boolean
+}`
+        ],
+        [
+            '{ label: (price: number,) => {boolean} }',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"func","props":[{"type":"prop","name":"price","propType":{"type":"number"}}],"return":{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"boolean","value":{"type":"any"}}]}}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [{label: 'asd'}, false],
+                [{label: 1}, false],
+                [{label: 1, title: '11'}, false],
+                [{label: '', title: '11'}, false],
+                [function (price) {
+                    return false;
+                }, false],
+                [{
+                    label: function (price) {
+                        return false;
+                    }
+                }, true]
+            ],
+            `{
+    label: (price: number) => {
+        boolean: any
+    }
+}`
+        ],
+        [
+            '{ label: (price: number,title:string) => boolean }',
+            '{"type":"object","value":[{"type":"objectValue","mastNeed":true,"key":"label","value":{"type":"func","props":[{"type":"prop","name":"price","propType":{"type":"number"}},{"type":"prop","name":"title","propType":{"type":"string"}}],"return":{"type":"boolean"}}}]}',
+            [
+                [1, false],
+                [[''], false],
+                [['', 1], false],
+                [{}, false],
+                [{label: 'asd'}, false],
+                [{label: 1}, false],
+                [{label: 1, title: '11'}, false],
+                [{label: '', title: '11'}, false],
+                [function (price) {
+                    return false;
+                }, false],
+                [{
+                    label: function (price) {
+                        return false;
+                    }
+                }, true]
+            ],
+            `{
+    label: (price: number, title: string) => boolean
 }`
         ],
     ];
@@ -560,7 +791,8 @@ function run() {
                 console.error(stringify(JSON.parse(vals[1])))
                 break;
             }
-            vals[2].forEach(itemCheck => {
+            for (let j = 0; j < vals[2].length; j++) {
+                const itemCheck = vals[2][j];
                 if(check(vals[0], itemCheck[0]) === itemCheck[1]) {
                     // console.log('ok')
                 } else {
@@ -569,8 +801,9 @@ function run() {
                     console.log(vals[1])
                     console.log(itemCheck)
                     console.log(check(vals[0], itemCheck[0]), itemCheck[1])
+                    break;
                 }
-            })
+            }
         } else {
             console.error(false, '!!!!!', vals[0])
             console.error(false, '!!!!!', JSON.stringify(parse(vals[0])))
@@ -579,4 +812,5 @@ function run() {
         }
     }
 }
+
 exports.typeCheck = run;

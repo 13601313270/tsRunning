@@ -44,23 +44,50 @@ function check(parseConfig, value) {
             if(typeof val !== 'object') {
                 return false;
             }
-            const configKeys = config.value.map(item => item.key);
+            /*
+            * 注意 { [key: number]: string } 是可以匹配上 ['hello']
+            * */
+            // 通过值的所有键去验证类型的键
             if(Object.keys(val).find(key => {
-                return !configKeys.includes(key)
+                return !config.value.find(configKey => {
+                    if(configKey.key.type) {
+                        return _checkConfig(configKey.key.keyType, val instanceof Array ? +key : key) && _checkConfig(configKey.value, val[key]);
+                    } else {
+                        return configKey.key === key;
+                    }
+                })
             })) {
                 return false;
             }
+            // 通过类型的所有键去验证值的键
             for (let i = 0; i < config.value.length; i++) {
                 let temp = config.value[i];
-                if(val[temp.key] === undefined) {
-                    if(temp.mastNeed) {
-                        return false;
-                    } else {
-                        return true;
+                if(temp.key.type !== 'objectKey') {
+                    if(val[temp.key] === undefined) {
+                        if(temp.mastNeed) {
+                            return false;
+                        } else {
+                            return true;
+                        }
                     }
-                }
-                if(_checkConfig(temp.value, val[temp.key]) === false) {
-                    return false;
+                    if(_checkConfig(temp.value, val[temp.key]) === false) {
+                        return false;
+                    }
+                } else {
+                    /*
+                    * { [key: number]: string } 是可以匹配上 []
+                    * { [key: string]: string } 是可以匹配上 {}
+                    * */
+                    if(temp.key.keyType.type === 'string') {
+                        if(val instanceof Array) {
+                            return false;
+                        }
+                    }
+                    if(temp.key.keyType.type === 'number') {
+                        if(!(val instanceof Array)) {
+                            return false;
+                        }
+                    }
                 }
             }
             return true;

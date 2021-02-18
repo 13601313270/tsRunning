@@ -31,13 +31,19 @@ function stringify(obj) {
                 return tabStr(tab + 1) + result(item, tab + 1)
             }).join(',\n') + '\n' + tabStr(tab) + '}'
         } else if(obj.type === 'objectValue') {
-            return obj.key + (obj.mastNeed ? '' : '?') + ':' + result(obj.value, tab)
+            if(obj.key.type === 'objectKey') {
+                return result(obj.key) + (obj.mastNeed ? '' : '?') + ': ' + result(obj.value, tab)
+            } else {
+                return obj.key + (obj.mastNeed ? '' : '?') + ': ' + result(obj.value, tab)
+            }
+        } else if(obj.type === 'objectKey') {
+            return '[' + obj.name + ': ' + result(obj.keyType) + ']';
         } else if(obj.type === 'value') {
             return JSON.stringify(obj.value);
         } else if(obj.type === 'func') {
             return '(' + obj.props.map(item => {
-                return item.name + ": " + result(item.propType);
-            }).join(',') + ') => ' + result(obj.return)
+                return item.name + ": " + result(item.propType, tab);
+            }).join(', ') + ') => ' + result(obj.return, tab)
         }
     }
 
