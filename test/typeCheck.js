@@ -620,6 +620,17 @@ function run() {
             ]
         ],
         [
+            "'88'",
+            '{"type":"value","value":"88"}',
+            [
+                [1, false],
+                [88, false],
+                ["88", true],
+                ["", false],
+            ],
+            '"88"'
+        ],
+        [
             '"hello"',
             '{"type":"value","value":"hello"}',
             [

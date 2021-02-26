@@ -141,6 +141,11 @@ function parse(typeStrProp) {
                 type: 'value',
                 value: getNextWord().match(/^\"(.+)\"$/, '$1')[1]
             }
+        } else if(getNextWord(true).match(/^\'(.+)\'$/)) {
+            temp = {
+                type: 'value',
+                value: getNextWord().match(/^\'(.+)\'$/, '$1')[1]
+            }
         } else if(['true', 'false'].includes(getNextWord(true))) {
             temp = {
                 type: 'value',
