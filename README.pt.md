@@ -1,5 +1,7 @@
 ## ts-running: Uma Ferramenta de Validação de Tipos em Tempo de Execução para TypeScript
 
+**Idiomas:** [English](./README.md) | [中文](./README.zh-CN.md) | [Español](./README.es.md) | Português
+
 O TypeScript oferece capacidade de validação de tipos para JavaScript, mas todos sabemos que a validação do TypeScript ocorre em tempo de compilação. Quando o código é executado em um navegador ou em um ambiente Node.js, ele volta a ser JavaScript puro. Existem certos cenários em que precisamos de validação de tipos em tempo de execução, como por exemplo:
 
 1. No lado do servidor (Node.js): verificar se os dados recebidos do navegador estão em conformidade com uma estrutura esperada.

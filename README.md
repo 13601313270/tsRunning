@@ -1,5 +1,7 @@
 ## ts-running: A TypeScript Runtime Type Validation Tool
 
+**Languages:** English | [中文](./README.zh-CN.md) | [Español](./README.es.md) | [Português](./README.pt.md)
+
 TypeScript provides type checking for JavaScript, but we all know that TypeScript's validation happens at compile time. By the time code runs in a browser or Node.js environment, it's just plain JavaScript again. There are certain scenarios where we need runtime type validation, such as:
 
 1. On the server side (Node.js): verifying that data received from the browser conforms to an expected structure.
