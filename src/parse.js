@@ -56,7 +56,8 @@ function parse(typeStrProp) {
             'undefined',
             'null',
             'never',
-            'Date'
+            'Date',
+            'Image'
         ].includes(getNextWord(true))) {
             temp = {type: getNextWord()}
         } else if(getNextWord(true) === 'Array') {

@@ -12,6 +12,11 @@ function check(parseConfig, value) {
             return true;
         } else if(config.type === 'Date') {
             return val instanceof Date;
+        } else if(config.type === 'Image') {
+            if (typeof Image === 'undefined') {
+                return false;
+            }
+            return val instanceof Image;
         } else if(config.type === 'array') {
             if(val instanceof Array) {
                 for (let i = 0; i < val.length; i++) {

@@ -1,5 +1,10 @@
 const {parse, check, stringify} = require('../src/index.js');
 
+// Node.js 环境下 Image 未定义，按需 mock 一个供测试使用
+if (typeof Image === 'undefined') {
+    global.Image = class Image {};
+}
+
 function run() {
     const testList = [
         [
@@ -789,6 +794,27 @@ function run() {
             `{
     label: (price: number, title: string) => boolean
 }`
+        ],
+        [
+            'Image',
+            '{"type":"Image"}',
+            [
+                [1, false],
+                ['1', false],
+                [new Image(), true],
+            ]
+        ],
+        [
+            'Image|string[]',
+            '{"type":"|","value":[{"type":"Image"},{"type":"array","value":{"type":"string"}}]}',
+            [
+                [new Image(), true],
+                // ['', false],
+                // [[''], true],
+                // [true, false],
+                // [null, false],
+            ],
+            'Image|Array<string>'
         ],
     ];
     for (let i = 0; i < testList.length; i++) {

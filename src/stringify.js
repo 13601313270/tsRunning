@@ -13,7 +13,8 @@ function stringify(obj) {
             'undefined',
             'null',
             'never',
-            'Date'
+            'Date',
+            'Image'
         ].includes(obj.type)) {
             return obj.type;
         } else if(obj.type === 'array') {
